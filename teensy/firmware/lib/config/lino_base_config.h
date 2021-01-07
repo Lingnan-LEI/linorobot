@@ -9,13 +9,13 @@
 // #define LINO_BASE MECANUM         // Mecanum drive robot
 
 //uncomment the motor driver you're using
-#define USE_L298_DRIVER
+//define USE_L298_DRIVER
 // #define USE_BTS7960_DRIVER
-// #define USE_ESC
+#define USE_ESC
 
 //uncomment the IMU you're using
-#define USE_GY85_IMU
-// #define USE_MPU6050_IMU
+//#define USE_GY85_IMU
+#define USE_MPU6050_IMU
 // #define USE_MPU9150_IMU
 // #define USE_MPU9250_IMU
 
@@ -57,11 +57,11 @@ ROBOT ORIENTATION
 */
 
 /// ENCODER PINS
-#define MOTOR1_ENCODER_A 15
-#define MOTOR1_ENCODER_B 14 
+#define MOTOR1_ENCODER_A 29
+#define MOTOR1_ENCODER_B 30 
 
-#define MOTOR2_ENCODER_A 11
-#define MOTOR2_ENCODER_B 12 
+#define MOTOR2_ENCODER_A 36
+#define MOTOR2_ENCODER_B 35 
 
 #define MOTOR3_ENCODER_A 17
 #define MOTOR3_ENCODER_B 16 
