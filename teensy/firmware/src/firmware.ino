@@ -22,6 +22,7 @@
 #include "Kinematics.h"
 #include "PID.h"
 #include "Imu.h"
+#include "std_msgs/Empty.h"
 
 #define ENCODER_OPTIMIZE_INTERRUPTS // comment this out on Non-Teensy boards
 #include "Encoder.h"
@@ -55,14 +56,18 @@ float g_req_angular_vel_z = 0;
 
 unsigned long g_prev_command_time = 0;
 
+bool lightSwitch = false;
+
 //callback function prototypes
 void commandCallback(const geometry_msgs::Twist& cmd_msg);
 void PIDCallback(const lino_msgs::PID& pid);
+void lightCallback(const std_msgs::Empty& light)
 
 ros::NodeHandle nh;
 
 ros::Subscriber<geometry_msgs::Twist> cmd_sub("cmd_vel", commandCallback);
 ros::Subscriber<lino_msgs::PID> pid_sub("pid", PIDCallback);
+ros::Subscriber<std_msgs::Empty> light_sub("light", lightCallback);
 
 lino_msgs::Imu raw_imu_msg;
 ros::Publisher raw_imu_pub("raw_imu", &raw_imu_msg);
@@ -79,6 +84,7 @@ void setup()
     nh.getHardware()->setBaud(57600);
     nh.subscribe(pid_sub);
     nh.subscribe(cmd_sub);
+    nh.subscribe(light_sub);
     nh.advertise(raw_vel_pub);
     nh.advertise(raw_imu_pub);
 
@@ -129,6 +135,14 @@ void loop()
         }
         prev_imu_time = millis();
     }
+    
+    if (lightSwitch==false) {
+        digitalWrite(LED_BUILTIN, LOW);
+    }
+    
+    if (lightSwitch==true) {
+        digitalWrite(LED_BUILTIN, HIGH);
+    }
 
     //this block displays the encoder readings. change DEBUG to 0 if you don't want to display
     if(DEBUG)
@@ -162,6 +176,11 @@ void commandCallback(const geometry_msgs::Twist& cmd_msg)
     g_req_angular_vel_z = cmd_msg.angular.z;
 
     g_prev_command_time = millis();
+}
+
+void lightCallback(const std_msgs::Empty& light)
+{
+    lightSwitch = !lightSwitch;
 }
 
 void moveBase()
