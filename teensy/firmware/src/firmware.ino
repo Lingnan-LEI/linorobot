@@ -61,7 +61,7 @@ bool lightSwitch = false;
 //callback function prototypes
 void commandCallback(const geometry_msgs::Twist& cmd_msg);
 void PIDCallback(const lino_msgs::PID& pid);
-void lightCallback(const std_msgs::Empty& light)
+void lightCallback(const std_msgs::Empty& light);
 
 ros::NodeHandle nh;
 
@@ -79,7 +79,7 @@ void setup()
 {
     steering_servo.attach(STEERING_PIN);
     steering_servo.write(90); 
-    
+    pinMode(LED_BUILTIN, OUTPUT);
     nh.initNode();
     nh.getHardware()->setBaud(57600);
     nh.subscribe(pid_sub);
