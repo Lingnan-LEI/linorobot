@@ -25,7 +25,8 @@
 
 #define ENCODER_OPTIMIZE_INTERRUPTS // comment this out on Non-Teensy boards
 #include "Encoder.h"
-
+#include "Sabertooth.h"
+#define USBCON
 #define IMU_PUBLISH_RATE 20 //hz
 #define COMMAND_RATE 20 //hz
 #define DEBUG_RATE 5
@@ -37,10 +38,12 @@ Encoder motor4_encoder(MOTOR4_ENCODER_A, MOTOR4_ENCODER_B, COUNTS_PER_REV);
 
 Servo steering_servo;
 
-Controller motor1_controller(Controller::MOTOR_DRIVER, MOTOR1_PWM, MOTOR1_IN_A, MOTOR1_IN_B);
-Controller motor2_controller(Controller::MOTOR_DRIVER, MOTOR2_PWM, MOTOR2_IN_A, MOTOR2_IN_B); 
-Controller motor3_controller(Controller::MOTOR_DRIVER, MOTOR3_PWM, MOTOR3_IN_A, MOTOR3_IN_B);
-Controller motor4_controller(Controller::MOTOR_DRIVER, MOTOR4_PWM, MOTOR4_IN_A, MOTOR4_IN_B);
+Sabertooth ST(128,Serial1);
+
+//Controller motor1_controller(Controller::MOTOR_DRIVER, MOTOR1_PWM, MOTOR1_IN_A, MOTOR1_IN_B);
+//Controller motor2_controller(Controller::MOTOR_DRIVER, MOTOR2_PWM, MOTOR2_IN_A, MOTOR2_IN_B); 
+//Controller motor3_controller(Controller::MOTOR_DRIVER, MOTOR3_PWM, MOTOR3_IN_A, MOTOR3_IN_B);
+//Controller motor4_controller(Controller::MOTOR_DRIVER, MOTOR4_PWM, MOTOR4_IN_A, MOTOR4_IN_B);
 
 PID motor1_pid(PWM_MIN, PWM_MAX, K_P, K_I, K_D);
 PID motor2_pid(PWM_MIN, PWM_MAX, K_P, K_I, K_D);
@@ -72,6 +75,7 @@ ros::Publisher raw_vel_pub("raw_vel", &raw_vel_msg);
 
 void setup()
 {
+   
     steering_servo.attach(STEERING_PIN);
     steering_servo.write(90); 
     
@@ -81,12 +85,17 @@ void setup()
     nh.subscribe(cmd_sub);
     nh.advertise(raw_vel_pub);
     nh.advertise(raw_imu_pub);
+    Serial1.begin(9600);
 
     while (!nh.connected())
     {
         nh.spinOnce();
     }
-    nh.loginfo("LINOBASE CONNECTED");
+    nh.loginfo("LINOBASE CONNECTED"); 
+    if (Serial) {
+	nh.loginfo("Serial");}
+    if (Serial1) {
+	nh.loginfo("Serial One");}
     delay(1);
 }
 
@@ -177,11 +186,17 @@ void moveBase()
 
     //the required rpm is capped at -/+ MAX_RPM to prevent the PID from having too much error
     //the PWM value sent to the motor driver is the calculated PID based on required RPM vs measured RPM
-    motor1_controller.spin(motor1_pid.compute(req_rpm.motor1, current_rpm1));
-    motor2_controller.spin(motor2_pid.compute(req_rpm.motor2, current_rpm2));
-    motor3_controller.spin(motor3_pid.compute(req_rpm.motor3, current_rpm3));  
-    motor4_controller.spin(motor4_pid.compute(req_rpm.motor4, current_rpm4));    
-
+    //motor1_controller.spin(motor1_pid.compute(req_rpm.motor1, current_rpm1));
+    //motor2_controller.spin(motor2_pid.compute(req_rpm.motor2, current_rpm2));
+    //motor3_controller.spin(motor3_pid.compute(req_rpm.motor3, current_rpm3));  
+    //motor4_controller.spin(motor4_pid.compute(req_rpm.motor4, current_rpm4));    
+    int motor1speed = motor1_pid.compute(req_rpm.motor1, current_rpm1);
+   //ST.motor(1, motor1_pid.compute(req_rpm.motor1, current_rpm1));
+    ST.motor(1, motor1speed);
+    ST.motor(2, motor2_pid.compute(req_rpm.motor2, current_rpm2));
+    char buffer[50];
+    sprintf (buffer, "Motor 1 Speed : %ld", motor1speed);
+    nh.loginfo(buffer); 	
     Kinematics::velocities current_vel;
 
     if(kinematics.base_platform == Kinematics::ACKERMANN || kinematics.base_platform == Kinematics::ACKERMANN1)
