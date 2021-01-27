@@ -21,16 +21,16 @@
 
 #define DEBUG 1
 
-#define K_P 0.6 // P constant
-#define K_I 0.3 // I constant
-#define K_D 0.5 // D constant
+#define K_P 0.8 // P constant
+#define K_I 0.1 // I constant
+#define K_D 0.05 // D constant
 
 //define your robot' specs here
-#define MAX_RPM 330               // motor's maximum RPM
-#define COUNTS_PER_REV 1550       // wheel encoder's no of ticks per rev
-#define WHEEL_DIAMETER 0.10       // wheel's diameter in meters
+#define MAX_RPM 175               // motor's maximum RPM
+#define COUNTS_PER_REV 36200       // wheel encoder's no of ticks per rev
+#define WHEEL_DIAMETER 0.127       // wheel's diameter in meters
 #define PWM_BITS 8                // PWM Resolution of the microcontroller
-#define LR_WHEELS_DISTANCE 0.235  // distance between left and right wheels
+#define LR_WHEELS_DISTANCE 0.615  // distance between left and right wheels
 #define FR_WHEELS_DISTANCE 0.30   // distance between front and rear wheels. Ignore this if you're on 2WD/ACKERMANN
 #define MAX_STEERING_ANGLE 0.415  // max steering angle. This only applies to Ackermann steering
 
@@ -57,8 +57,8 @@ ROBOT ORIENTATION
 */
 
 /// ENCODER PINS
-#define MOTOR1_ENCODER_A 29
-#define MOTOR1_ENCODER_B 30 
+#define MOTOR1_ENCODER_A 30
+#define MOTOR1_ENCODER_B 29 
 
 #define MOTOR2_ENCODER_A 36
 #define MOTOR2_ENCODER_B 35 
@@ -135,7 +135,7 @@ ROBOT ORIENTATION
   #define MOTOR4_IN_A 4
   #define MOTOR4_IN_B 3
 
-  #define PWM_MAX 400
+  #define PWM_MAX 100
   #define PWM_MIN -PWM_MAX
 #endif
 
