@@ -30,6 +30,7 @@
 #define IMU_PUBLISH_RATE 20 //hz
 #define COMMAND_RATE 20 //hz
 #define DEBUG_RATE 5
+#define LIGHT_PIN 25
 
 Encoder motor1_encoder(MOTOR1_ENCODER_A, MOTOR1_ENCODER_B, COUNTS_PER_REV);
 Encoder motor2_encoder(MOTOR2_ENCODER_A, MOTOR2_ENCODER_B, COUNTS_PER_REV); 
@@ -79,7 +80,7 @@ void setup()
 {
     steering_servo.attach(STEERING_PIN);
     steering_servo.write(90); 
-    pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(LIGHT_PIN, OUTPUT);
     nh.initNode();
     nh.getHardware()->setBaud(57600);
     nh.subscribe(pid_sub);
@@ -137,11 +138,11 @@ void loop()
     }
     
     if (lightSwitch==false) {
-        digitalWrite(LED_BUILTIN, LOW);
+        digitalWrite(LIGHT_PIN, LOW);
     }
     
     if (lightSwitch==true) {
-        digitalWrite(LED_BUILTIN, HIGH);
+        digitalWrite(LIGHT_PIN, HIGH);
     }
 
     //this block displays the encoder readings. change DEBUG to 0 if you don't want to display
