@@ -1,15 +1,15 @@
 DWAPlannerROS:
-  max_trans_vel: 0.2
-  min_trans_vel: -0.2
-  max_vel_x: 0.2
-  min_vel_x: -0.025
+  max_trans_vel: 0.1
+  min_trans_vel: -0.1
+  max_vel_x: 0.1
+  min_vel_x: -0.5
   max_vel_y: 0.0
   min_vel_y: 0.0
-  max_rot_vel: 0.2
-  min_rot_vel: -0.2
+  max_rot_vel: 0.1
+  min_rot_vel: -0.1
   acc_lim_x: 1.25
   acc_lim_y: 0.0
-  acc_lim_theta: 5
+  acc_lim_theta: 1
   acc_lim_trans: 1.25
 
   prune_plan: false
@@ -37,3 +37,7 @@ DWAPlannerROS:
 
   use_dwa: true
   restore_defaults: false
+
+TrajectoryPlannerROS:
+  max_rotational_vel: 0.1
+ 
