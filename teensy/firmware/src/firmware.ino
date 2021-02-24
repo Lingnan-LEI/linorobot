@@ -32,6 +32,7 @@
 #define COMMAND_RATE 20 //hz
 #define DEBUG_RATE 5
 #define LIGHT_PIN 25
+#define MOTION_PIN 26
 
 Encoder motor1_encoder(MOTOR1_ENCODER_A, MOTOR1_ENCODER_B, COUNTS_PER_REV);
 Encoder motor2_encoder(MOTOR2_ENCODER_A, MOTOR2_ENCODER_B, COUNTS_PER_REV); 
@@ -66,6 +67,7 @@ bool lightSwitch = false;
 void commandCallback(const geometry_msgs::Twist& cmd_msg);
 void PIDCallback(const lino_msgs::PID& pid);
 void lightCallback(const std_msgs::Empty& light);
+void motionDetected();
 
 ros::NodeHandle nh;
 
@@ -78,6 +80,8 @@ ros::Publisher raw_imu_pub("raw_imu", &raw_imu_msg);
 
 lino_msgs::Velocities raw_vel_msg;
 ros::Publisher raw_vel_pub("raw_vel", &raw_vel_msg);
+std_msgs::Empty pause_msg;
+ros::Publisher pause_pub("pause", &pause_msg);
 
 void setup()
 {
@@ -85,13 +89,16 @@ void setup()
     steering_servo.attach(STEERING_PIN);
     steering_servo.write(90); 
     pinMode(LIGHT_PIN, OUTPUT);
+    pinMode(MOTION_PIN, INPUT);
+    attachInterrupt(digitalPinToInterrupt(MOTION_PIN), motionDetected, RISING);
     nh.initNode();
     nh.getHardware()->setBaud(57600);
     nh.subscribe(pid_sub);
     nh.subscribe(cmd_sub);
     nh.subscribe(light_sub);
     nh.advertise(raw_vel_pub);
-    nh.advertise(raw_imu_pub);
+    nh.advertise(raw_imu_pub); 
+    nh.advertise(pause_pub);
     Serial1.begin(9600);
 
     while (!nh.connected())
@@ -292,4 +299,12 @@ void printDebug()
     nh.loginfo(buffer);
     sprintf (buffer, "Encoder RearRight  : %ld", motor4_encoder.read());
     nh.loginfo(buffer);
+}
+
+void motionDetected()
+{
+    nh.loginfo("Motion Detected");
+    lightSwitch = false;
+    pause_pub.publish(&pause_msg);
+    
 }
