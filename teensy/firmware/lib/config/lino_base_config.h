@@ -21,31 +21,32 @@
 
 #define DEBUG 1
 
-#define K_P 0.8 // P constant
-#define K_I 0.1 // I constant
-#define K_D 0.05 // D constant
+#define K_P 0.6 // P constant
+#define K_I 0.08 // I constant
+#define K_D 0.1 // D constant
 
 //define your robot' specs here
-#define MAX_RPM 175               // motor's maximum RPM
-#define COUNTS_PER_REV 36200       // wheel encoder's no of ticks per rev
+#define MAX_RPM 330               // motor's maximum RPM
+#define COUNTS_PER_REV 53700       // wheel encoder's no of ticks per rev
 #define WHEEL_DIAMETER 0.127       // wheel's diameter in meters
 #define PWM_BITS 8                // PWM Resolution of the microcontroller
-#define LR_WHEELS_DISTANCE 0.615  // distance between left and right wheels
+#define LR_WHEELS_DISTANCE 0.46  // distance between left and right wheels
 #define FR_WHEELS_DISTANCE 0.30   // distance between front and rear wheels. Ignore this if you're on 2WD/ACKERMANN
 #define MAX_STEERING_ANGLE 0.415  // max steering angle. This only applies to Ackermann steering
 
-//=================BIGGER ROBOT SPEC (BTS7960)=============================
-// #define K_P 0.05  // P constant
-// #define K_I 0.9   // I constant
-// #define K_D 0.1   // D constant
+//=================BIGGER ROBOT SPEC ===================================
+//#define K_P 0.8 // P constant
+//#define K_I 0.1 // I constant
+//#define K_D 0.05 // D constant
 
-// define your robot' specs here
-// #define MAX_RPM 45               // motor's maximum RPM
-// #define COUNTS_PER_REV 4000      // wheel encoder's no of ticks per rev
-// #define WHEEL_DIAMETER 0.15      // wheel's diameter in meters
-// #define PWM_BITS 8               // PWM Resolution of the microcontroller
-// #define LR_WHEELS_DISTANCE 0.32  // distance between left and right wheels
-// #define FR_WHEELS_DISTANCE 0.38  // distance between front and back wheels. Ignore this if you're on 2WD/ACKERMANN
+//define your robot' specs here
+//#define MAX_RPM 175               // motor's maximum RPM
+//#define COUNTS_PER_REV 36200       // wheel encoder's no of ticks per rev
+//#define WHEEL_DIAMETER 0.127       // wheel's diameter in meters
+//#define PWM_BITS 8                // PWM Resolution of the microcontroller
+//#define LR_WHEELS_DISTANCE 0.615  // distance between left and right wheels
+//#define FR_WHEELS_DISTANCE 0.30   // distance between front and rear wheels. Ignore this if you're on 2WD/ACKERMANN
+//#define MAX_STEERING_ANGLE 0.415  // max steering angle. This only applies to Ackermann steering
 //================= END OF BIGGER ROBOT SPEC =============================
 
 /*
