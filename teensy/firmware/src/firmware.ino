@@ -90,7 +90,7 @@ void setup()
     steering_servo.write(90); 
     pinMode(LIGHT_PIN, OUTPUT);
     pinMode(MOTION_PIN, INPUT);
-    attachInterrupt(digitalPinToInterrupt(MOTION_PIN), motionDetected, RISING);
+    //attachInterrupt(digitalPinToInterrupt(MOTION_PIN), motionDetected, RISING);
     nh.initNode();
     nh.getHardware()->setBaud(57600);
     nh.subscribe(pid_sub);
